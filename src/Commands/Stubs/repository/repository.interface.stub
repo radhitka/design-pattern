@@ -1,0 +1,16 @@
+<?php 
+
+namespace {{ namespace }};
+
+use {{ namespace }}\Interfaces\{{ class }}Interface;
+
+use {{ namespacedModel }};
+
+class {{ class }} implements {{ class }}Interface
+{
+    public function get()
+    {
+        return {{ m }}::get();
+    }
+}
+

@@ -1,0 +1,13 @@
+<?php 
+
+namespace {{ namespace }};
+
+use {{ namespace }}\Interfaces\{{ class }}Interface;
+
+class {{ class }} implements {{ class }}Interface
+{
+    public function get()
+    {
+    }
+}
+

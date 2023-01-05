@@ -1,0 +1,24 @@
+{
+    "name": "raditor/design-pattern",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Raditor\\DesignPattern\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Radhitka",
+            "email": "raditfatner47@gmail.com"
+        }
+    ],
+    "require": {},
+    "extra": {
+        "laravel" :{
+            "providers":[
+                "Raditor\\DesignPattern\\DesignPatternProvider"
+            ]
+        }
+    }
+}
