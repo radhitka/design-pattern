@@ -4,6 +4,7 @@ namespace Raditor\DesignPattern\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Facades\Artisan;
 use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -53,7 +54,9 @@ class RepositoryCommand extends GeneratorCommand
             return false;
         }
 
-        if (!$this->option('m')) {
+        $model = $this->option('m');
+
+        if (!$model) {
             $this->components->error('Model is required!');
 
             return Command::FAILURE;
@@ -74,6 +77,9 @@ class RepositoryCommand extends GeneratorCommand
 
             return false;
         }
+
+        //auto add model
+        Artisan::call('make:model', ['name' => $model]);
 
         // Next, we will generate the path to the location where this class' file should get
         // written. Then, we will build the class and make the proper replacements on the
