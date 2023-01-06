@@ -16,7 +16,6 @@ class DesignPatternProvider extends ServiceProvider
     public function register()
     {
         //
-
     }
 
     /**
