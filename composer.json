@@ -1,5 +1,6 @@
 {
     "name": "raditor/design-pattern",
+    "description": "a simple command to create file service and repository with optional inferface :)",
     "type": "library",
     "license": "MIT",
     "autoload": {
@@ -9,8 +10,7 @@
     },
     "authors": [
         {
-            "name": "Radhitka",
-            "email": "raditfatner47@gmail.com"
+            "name": "Radhitka Adha"
         }
     ],
     "require": {},

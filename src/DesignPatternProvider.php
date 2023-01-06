@@ -27,7 +27,9 @@ class DesignPatternProvider extends ServiceProvider
     public function boot()
     {
         //
-        $this->commands(ServiceCommand::class);
-        $this->commands(RepositoryCommand::class);
+        $this->commands([
+            ServiceCommand::class,
+            RepositoryCommand::class
+        ]);
     }
 }

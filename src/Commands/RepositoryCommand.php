@@ -194,17 +194,17 @@ class RepositoryCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return '/Commands/Stubs/repository/repository.stub';
+        return  __DIR__ . '/Stubs/repository/repository.stub';
     }
 
     protected function getRepositoryInterfaceStub()
     {
-        return '/Commands/Stubs/repository/repository.interface.stub';
+        return  __DIR__ . '/Stubs/repository/repository.interface.stub';
     }
 
     protected function getInterfaceStub()
     {
-        return '/Commands/Stubs/repository/interface.stub';
+        return  __DIR__ . '/Stubs/repository/interface.stub';
     }
 
     /**
