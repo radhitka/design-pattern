@@ -2,13 +2,10 @@
 
 namespace {{ namespace }};
 
-use {{ namespacedModel }};
-
 class {{ class }}
 {
     public function get()
     {
-        return {{ m }}::get();
     }
 }
 

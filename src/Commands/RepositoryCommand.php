@@ -54,14 +54,6 @@ class RepositoryCommand extends GeneratorCommand
             return false;
         }
 
-        $model = $this->option('m');
-
-        if (!$model) {
-            $this->components->error('Model is required!');
-
-            return Command::FAILURE;
-        }
-
         $name = $this->qualifyClass($this->getNameInput());
 
         $path = $this->getPath($name);
@@ -79,6 +71,8 @@ class RepositoryCommand extends GeneratorCommand
         }
 
         //auto add model
+        $model = $this->option('m');
+
         Artisan::call('make:model', ['name' => $model]);
 
         // Next, we will generate the path to the location where this class' file should get
