@@ -71,7 +71,7 @@ class RepositoryCommand extends GeneratorCommand
         }
 
         //auto add model
-        $model = $this->option('m');
+        $model = $this->userWantedModel();
         if ($model) {
             Artisan::call('make:model', ['name' => $model]);
         }
@@ -82,7 +82,7 @@ class RepositoryCommand extends GeneratorCommand
         $this->makeDirectory($path);
 
         //
-        $isInterface = $this->option('i');
+        $isInterface = $this->userWantedInterface();
 
         $this->files->put($path, $this->sortImports($this->buildRepositoryClass($name, $isInterface)));
 
@@ -124,38 +124,42 @@ class RepositoryCommand extends GeneratorCommand
      * @return string
      */
 
-    protected function buildRepositoryClass($name, $isInterface)
+    protected function buildRepositoryClass($name)
     {
-        $model = $this->option('m');
+        if ($this->userWantedInterface()) {
+            $stub = $this->buildRepositoryWithInterfaceClass($name);
+        } else {
+            $stub = $this->buildRepositoryWithoutInterfaceClass($name);
+        }
 
-        $stub = $isInterface ? $this->buildRepositoryWithInterfaceClass($name) : $this->buildRepositoryWithModelOrNotClass($name);
+        $model = $this->userWantedModel();
+
         if ($model) {
             return $this->replaceModel($stub, $model);
         }
-        return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
-    }
-
-    protected function buildRepositoryWithModelOrNotClass($name)
-    {
-        $model = $this->option('m');
-        if ($model) {
-            $stub = $this->files->get($this->getRepositoryInterfaceModelStub());
-        } else {
-            $stub = $this->files->get($this->getRepositoryInterfaceStub());
-        }
 
         return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
     }
 
-    protected function buildRepositoryWithInterfaceClass($name)
+    protected function buildRepositoryWithoutInterfaceClass($name)
     {
-        $model = $this->option('m');
+        $model = $this->userWantedModel();
         if ($model) {
             $stub = $this->files->get($this->getStubRepositoryModel());
         } else {
             $stub = $this->files->get($this->getStubRepository());
         }
+        return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
+    }
 
+    protected function buildRepositoryWithInterfaceClass($name)
+    {
+        $model = $this->userWantedModel();
+        if ($model) {
+            $stub = $this->files->get($this->getRepositoryInterfaceModelStub());
+        } else {
+            $stub = $this->files->get($this->getRepositoryInterfaceStub());
+        }
         return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
     }
 
@@ -263,5 +267,15 @@ class RepositoryCommand extends GeneratorCommand
         return [
             ['model', 'm', InputOption::VALUE_OPTIONAL, 'Model'],
         ];
+    }
+
+    private function userWantedModel()
+    {
+        return $this->option('m');
+    }
+
+    private function userWantedInterface()
+    {
+        return $this->option('i');
     }
 }
