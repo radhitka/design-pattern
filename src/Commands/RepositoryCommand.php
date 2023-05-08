@@ -72,8 +72,9 @@ class RepositoryCommand extends GeneratorCommand
 
         //auto add model
         $model = $this->option('m');
-
-        Artisan::call('make:model', ['name' => $model]);
+        if ($model) {
+            Artisan::call('make:model', ['name' => $model]);
+        }
 
         // Next, we will generate the path to the location where this class' file should get
         // written. Then, we will build the class and make the proper replacements on the
@@ -127,14 +128,33 @@ class RepositoryCommand extends GeneratorCommand
     {
         $model = $this->option('m');
 
-        $stub = $isInterface ? $this->buildRepositoryWithInterfaceClass($name) : parent::buildClass($name);
+        $stub = $isInterface ? $this->buildRepositoryWithInterfaceClass($name) : $this->buildRepositoryWithModelOrNotClass($name);
+        if ($model) {
+            return $this->replaceModel($stub, $model);
+        }
+        return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
+    }
 
-        return $this->replaceModel($stub, $model);
+    protected function buildRepositoryWithModelOrNotClass($name)
+    {
+        $model = $this->option('m');
+        if ($model) {
+            $stub = $this->files->get($this->getRepositoryInterfaceModelStub());
+        } else {
+            $stub = $this->files->get($this->getRepositoryInterfaceStub());
+        }
+
+        return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
     }
 
     protected function buildRepositoryWithInterfaceClass($name)
     {
-        $stub = $this->files->get($this->getRepositoryInterfaceStub());
+        $model = $this->option('m');
+        if ($model) {
+            $stub = $this->files->get($this->getStubRepositoryModel());
+        } else {
+            $stub = $this->files->get($this->getStubRepository());
+        }
 
         return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
     }
@@ -197,9 +217,24 @@ class RepositoryCommand extends GeneratorCommand
         return  __DIR__ . '/Stubs/repository/repository.stub';
     }
 
+    protected function getStubRepository()
+    {
+        return  $this->getStub();
+    }
+
+    protected function getStubRepositoryModel()
+    {
+        return  __DIR__ . '/Stubs/repository/repository-model.stub';
+    }
+
     protected function getRepositoryInterfaceStub()
     {
         return  __DIR__ . '/Stubs/repository/repository.interface.stub';
+    }
+
+    protected function getRepositoryInterfaceModelStub()
+    {
+        return  __DIR__ . '/Stubs/repository/repository-model.interface.stub';
     }
 
     protected function getInterfaceStub()
