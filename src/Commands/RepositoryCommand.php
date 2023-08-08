@@ -49,7 +49,7 @@ class RepositoryCommand extends GeneratorCommand
         // language and that the class name will actually be valid. If it is not valid we
         // can error now and prevent from polluting the filesystem using invalid files.
         if ($this->isReservedName($this->getNameInput())) {
-            $this->components->error('The name "' . $this->getNameInput() . '" is reserved by PHP.');
+            $this->error('The name "' . $this->getNameInput() . '" is reserved by PHP.');
 
             return false;
         }
@@ -65,7 +65,7 @@ class RepositoryCommand extends GeneratorCommand
                 !$this->option('force')) &&
             $this->alreadyExists($this->getNameInput())
         ) {
-            $this->components->error($this->type . ' already exists.');
+            $this->error($this->type . ' already exists.');
 
             return false;
         }
@@ -114,7 +114,7 @@ class RepositoryCommand extends GeneratorCommand
             }
         }
 
-        $this->components->info(sprintf('%s [%s] created successfully.', $info, $path));
+        $this->info(sprintf('%s [%s] created successfully.', $info, $path));
     }
 
     /**
